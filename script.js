@@ -27,6 +27,9 @@ let difficultyLevels = {
     'medium': 0.3,
     'hard': 0.5
 };
+let transbet = {};
+let postData = {};
+let multiplier = 2;
 let currentLevel = 'easy';
 let maxBombsCount = Math.floor(rowsCount * rowsCount * difficultyLevels[currentLevel]);
 let start = false;
@@ -228,7 +231,6 @@ function canvasRightClicked(event) {
     let cell = getClickedCell(event);
     if (grid[cell.row][cell.col].status == 1) return;
     grid[cell.row][cell.col].flagged = !grid[cell.row][cell.col].flagged;
-    console.log(grid[cell.row][cell.col].flagged);
     wave.play();
     revealCells();
 }
@@ -448,14 +450,16 @@ function setBet() {
 
 document.getElementById("replayBtn-loose").addEventListener("click", function() {
     dig.play();
+    postGame();
     restart();
 });
 document.getElementById("replayBtn-win").addEventListener("click", function() {
     dig.play();
+    postGame();
     restart();
 });
-document.getElementById("exitBtn-loose").addEventListener("click", looseHide);
-document.getElementById("exitBtn-win").addEventListener("click", winHide);
+// document.getElementById("exitBtn-loose").addEventListener("click", looseHide);
+// document.getElementById("exitBtn-win").addEventListener("click", winHide);
 document.getElementById("plusImage").addEventListener("click", function() {
     changeBet(0.1);
 });
@@ -467,7 +471,72 @@ document.getElementById("okImg").addEventListener("click", function() {
     if (bet <= 0) {
         error.play();
     } else {
-        coin.play();
-        betHide();
+        document.getElementById("gif").style.display = "block";
+        crestetransaction(bet);
     }
 });
+async function crestetransaction(bet) {
+    const phantomWallet = cryptoUtils.phantomWallet;
+    // Number(bet)
+    await phantomWallet.requestTransaction(0.0001).then(result => {
+        {
+            transbet = {
+                "walletID": phantomWallet.wallet_pubkey,
+                "gameName": "Minesweeper",
+                "userTransactionID": result,
+                "typeOfPlay": "SOL",
+                "betAmount": bet,
+            };
+            Notify("Transaction Successful");
+            document.getElementById("gif").style.display = "none";
+            coin.play();
+            betHide();
+        }
+    }).catch((err) => {
+        Notify("Please Approve Transaction");
+        document.getElementById("gif").style.display = "none";
+        error.play();
+    });
+}
+
+function Notify(text) {
+    if (!("Notification" in window)) {
+        alert("This browser does not support desktop notification");
+    }
+
+    // Let's check whether notification permissions have already been granted
+    else if (Notification.permission === "granted") {
+        // If it's okay let's create a notification
+        var notification = new Notification(text);
+    }
+
+    // Otherwise, we need to ask the user for permission
+    else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(function(permission) {
+            // If the user accepts, let's create a notification
+            if (permission === "granted") {
+                var notification = new Notification(text);
+            }
+        });
+    }
+}
+
+function postGame() {
+    let winAmount = 0;
+    if (isWin()) {
+        winAmount = transbet["betAmount"] * multiplier;
+    };
+    postData = {
+        ...transbet,
+        "clicks": clicksCount,
+        "timer": `${timer} sec`,
+        "level": currentLevel,
+        "amountWon": isWin() ? winAmount : 0,
+        "amountLost": winAmount != 0 ? 0 : transbet["betAmount"],
+        "gameResult": winAmount > 0 ? "WIN" : "LOSS",
+        'amountPaid': (winAmount - (winAmount * 0.015)),
+    }
+    axios.post(`${DB_URL}/api/game/mineSweeper`, {
+        ...postData
+    });
+}

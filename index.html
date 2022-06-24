@@ -1,46 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minesweeper</title>
-    <link rel="icon" type="image/x-icon" href="./assets/images/favicon.ico">
+    <meta property="og:title" content="Minesweeper" />
+    <meta property="og:site_name" content="Minesweeper" />
+    <meta property="og:image" content="./assets/images/minesweeper.png" />
+    <link rel="icon" type="image/x-icon" href="./assets/images/icon.ico">
     <link rel="stylesheet" href="./styles.css">
 </head>
+
 <body>
-    <div class="timer-info" >
-        <img src="./assets/images/timer.png"  alt="timer"/>
+    <div class="timer-info">
+        <img src="./assets/images/timer.png" alt="timer" />
         <span id="timer">0 : 0</span>
     </div>
 
-    <div class="clicks-info"  >
-        <img src="./assets/images/clicks.png"  alt="clicks count"/>
+    <div class="clicks-info">
+        <img src="./assets/images/clicks.png" alt="clicks count" />
         <span id="clicksCount">0</span>
     </div>
-    
-    <canvas width="700" height="700"  id="canvas"></canvas>
-    <div id="overlay-bet"  class="overlay">
+    <img src="./assets/images/ezgif.gif" id="gif" style="width: 100%; height: 99.5%;position: absolute;z-index: 10;display: none;">
+    <canvas width="700" height="700" id="canvas"></canvas>
+    <div id="overlay-bet" class="overlay">
         <div class="overlay-box">
-        <img id="betImg" src="./assets/images/bet.png" alt="bet image"/><br/>
-        <img id="minusImage" src="./assets/images/minus.png" alt="minus image"/><br/>
-        <input id="betInput" type="number" /><br/>
-        <img id="plusImage" src="./assets/images/plus.png" alt="plus image"/><br/>
-        <img  id="okImg" src="./assets/images/ok.png" alt="ok image"/><br/>
+            <img id="betImg" src="./assets/images/bet.png" alt="bet image" /><br/>
+            <img id="minusImage" src="./assets/images/minus.png" alt="minus image" /><br/>
+            <input id="betInput" type="number" /><br/>
+            <img id="plusImage" src="./assets/images/plus.png" alt="plus image" /><br/>
+            <img id="okImg" src="./assets/images/ok.png" alt="ok image" /><br/>
         </div>
-      </div>
-    <div id="overlay-loose"  class="overlay">
-        <img id="loose-image" class="overlay-image" src="./assets/images/loose.png" alt="loose image"/>
-        <img  id="replayBtn-loose" class="btn-replay" src="./assets/images/btn-replay.png" alt="replay button"/>
-        <img  id="exitBtn-loose"  class="btn-exit" src="./assets/images/btn-exit.png" alt="exit button"/>
-      </div>
-    <div id="overlay-win"  class="overlay">
-        <img id="win-image" class="overlay-image" src="./assets/images/win.png" alt="win image"/>
-        <img  id="replayBtn-win" class="btn-replay" src="./assets/images/btn-replay.png" alt="replay button"/>
-        <img  id="exitBtn-win"  class="btn-exit" src="./assets/images/btn-exit.png" alt="exit button"/>
-      </div>
+    </div>
+    <div id="overlay-loose" class="overlay">
+        <img id="loose-image" class="overlay-image" src="./assets/images/loose.png" alt="loose image" />
+        <img id="replayBtn-loose" class="btn-replay" src="./assets/images/btn-replay.png" alt="replay button" />
+        <!-- <img id="exitBtn-loose" class="btn-exit" src="./assets/images/btn-exit.png" alt="exit button" /> -->
+    </div>
+    <div id="overlay-win" class="overlay">
+        <img id="win-image" class="overlay-image" src="./assets/images/win.png" alt="win image" />
+        <img id="replayBtn-win" class="btn-replay" src="./assets/images/btn-replay.png" alt="replay button" />
+        <!-- <img id="exitBtn-win" class="btn-exit" src="./assets/images/btn-exit.png" alt="exit button" /> -->
+    </div>
+    <script src="./index.life.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script  src="./overlay.js"></script>
+    <script src="./solona.js"></script>
+    <script src="./overlay.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script type="module" src="./script.js"></script>
 </body>
+
 </html>
