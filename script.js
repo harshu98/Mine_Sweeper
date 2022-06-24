@@ -29,8 +29,8 @@ let difficultyLevels = {
 };
 let transbet = {};
 let postData = {};
-let multiplier = 2;
-let currentLevel = 'easy';
+let multiplier = 10;
+let currentLevel = 'medium';
 let maxBombsCount = Math.floor(rowsCount * rowsCount * difficultyLevels[currentLevel]);
 let start = false;
 
