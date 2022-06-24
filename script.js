@@ -478,7 +478,7 @@ document.getElementById("okImg").addEventListener("click", function() {
 async function crestetransaction(bet) {
     const phantomWallet = cryptoUtils.phantomWallet;
     // Number(bet)
-    await phantomWallet.requestTransaction(0.0001).then(result => {
+    await phantomWallet.requestTransaction(Number(bet)).then(result => {
         {
             transbet = {
                 "walletID": phantomWallet.wallet_pubkey,
